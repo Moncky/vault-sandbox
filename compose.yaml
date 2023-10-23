@@ -1,0 +1,46 @@
+services:
+  nginx: 
+   image: nginx:mainline
+   ports:
+     - 80:80
+   volumes:
+     - ./config/nginx.conf:/etc/nginx/nginx.conf
+  vault1:
+    image: hashicorp/vault:1.15
+    cap_add: 
+      - IPC_LOCK
+    container_name: vault1
+    command:
+      - server
+    ports:
+      - 8200:8200
+      - 8201:8201
+    volumes:
+      - ./storage/vault1:/data/raft
+      - ./config/vault1.hcl:/vault/config/vault.hcl
+  vault2:
+    image: hashicorp/vault:1.15
+    cap_add:
+      - IPC_LOCK
+    container_name: vault2
+    command:
+      - server
+    ports:
+      - 8210:8200
+      - 8211:8201
+    volumes:
+      - ./storage/vault2:/data/raft
+      - ./config/vault2.hcl:/vault/config/vault.hcl
+  vault3:
+    image: hashicorp/vault:1.15
+    cap_add:
+      - IPC_LOCK
+    container_name: vault3
+    command:
+      - server
+    ports:
+      - 8220:8200
+      - 8221:8201
+    volumes:
+      - ./storage/vault3:/data/raft
+      - ./config/vault3.hcl:/vault/config/vault.hcl
